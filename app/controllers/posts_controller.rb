@@ -17,12 +17,12 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
+    @post = Post.find(params[:id])
   end
 
   # POST /posts or /posts.json
   def create
-    @post = Post.new(post_params)
-
+    @post = current_user.posts.build(post_params)
     respond_to do |format|
       if @post.save
         format.html { redirect_to @post, notice: "Post was successfully created." }
@@ -51,9 +51,14 @@ class PostsController < ApplicationController
   def destroy
     @post.destroy
     respond_to do |format|
-      format.html { redirect_to posts_url, notice: "Post was successfully destroyed." }
+      format.html { redirect_to posts_url, notice: "投稿を削除しました" }
       format.json { head :no_content }
     end
+  end
+  def confilm
+    @post = current_user.posts.build(post_params)
+    render :new if @post.invalid?
+   end
   end
 
   private
@@ -64,6 +69,5 @@ class PostsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def post_params
-      params.require(:post).permit(:title, :content, :image, :image_cache)
+      params.require(:post).permit(:title, :content, :image, :image_cache,:user_id)
     end
-end

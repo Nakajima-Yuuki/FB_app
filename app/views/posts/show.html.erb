@@ -12,8 +12,8 @@
 
 <p>
   <strong>Image:</strong>
-  <%= image_tag @post.image.url %>
+  <%= image_tag @post.image.url if @post.image && @post.image.url %>
 </p>
 
-<%= link_to '作成', edit_post_path(@post) %> |
+<%= link_to '編集', edit_post_path(@post) %> |
 <%= link_to '戻る', posts_path %>
